@@ -65,11 +65,14 @@ def class_remapping(parsing_mask):
 
 class FaceParsing():
     
-    def __init__(self, model_path='./face_parsing/79999_iter.pth'):
+    def __init__(self, model_path='./face_parsing/79999_iter.pth', device=None):
 
+
+        self.device = device or torch.device(
+            "mps" if torch.backends.mps.is_available() else "cpu")
         # Face Parsing Model
-        self.parsing_net = BiSeNet(n_classes=19).cuda().eval()
-        self.parsing_net.load_state_dict(torch.load(model_path))
+        self.parsing_net = BiSeNet(n_classes=19).to(self.device).eval()
+        self.parsing_net.load_state_dict(torch.load(model_path, map_location=self.device))
 
         self.to_tensor = transforms.Compose([
             transforms.ToTensor(),
@@ -88,7 +91,7 @@ class FaceParsing():
             img = cv2.resize(img, (512,512)) # Face Parsing Net only correctly works on 512x512 !!!
             img = self.to_tensor(img)
             img = torch.unsqueeze(img, 0)
-            img = img.cuda()
+            img = img.to(self.device)
             out = self.parsing_net(img)[0]
             parsing = out.squeeze(0).cpu().numpy().argmax(0)
 

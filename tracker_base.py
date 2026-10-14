@@ -106,10 +106,18 @@ class Tracker():
         self.mediapipe_detector = vision.FaceLandmarker.create_from_options(options)
 
         # FAN face alignment predictor (68 landmarks)
-        self.fa = face_alignment.FaceAlignment(face_alignment.LandmarksType.TWO_HALF_D, flip_input=True, face_detector='sfd')
+        self.fa = face_alignment.FaceAlignment(
+                face_alignment.LandmarksType.TWO_HALF_D,
+                flip_input=True,
+                face_detector='sfd',
+                device=str(self.device)
+               )
 
         # Face parsing model
-        self.face_parser = FaceParsing(model_path=tracker_cfg['face_parsing_model_path'])
+        self.face_parser = FaceParsing(
+            model_path=tracker_cfg['face_parsing_model_path'],
+            device=self.device
+            )
 
         # Matting model
         if 'use_matting' in tracker_cfg:

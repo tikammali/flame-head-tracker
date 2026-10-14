@@ -117,12 +117,28 @@ class Renderer(nn.Module):
 
         ## lighting
         pi = np.pi
+        # constant_factor = torch.tensor(
+        #     [1 / np.sqrt(4 * pi), ((2 * pi) / 3) * (np.sqrt(3 / (4 * pi))), ((2 * pi) / 3) * (np.sqrt(3 / (4 * pi))), \
+        #      ((2 * pi) / 3) * (np.sqrt(3 / (4 * pi))), (pi / 4) * (3) * (np.sqrt(5 / (12 * pi))),
+        #      (pi / 4) * (3) * (np.sqrt(5 / (12 * pi))), \
+        #      (pi / 4) * (3) * (np.sqrt(5 / (12 * pi))), (pi / 4) * (3 / 2) * (np.sqrt(5 / (12 * pi))),
+        #      (pi / 4) * (1 / 2) * (np.sqrt(5 / (4 * pi)))])
+        
         constant_factor = torch.tensor(
-            [1 / np.sqrt(4 * pi), ((2 * pi) / 3) * (np.sqrt(3 / (4 * pi))), ((2 * pi) / 3) * (np.sqrt(3 / (4 * pi))), \
-             ((2 * pi) / 3) * (np.sqrt(3 / (4 * pi))), (pi / 4) * (3) * (np.sqrt(5 / (12 * pi))),
-             (pi / 4) * (3) * (np.sqrt(5 / (12 * pi))), \
-             (pi / 4) * (3) * (np.sqrt(5 / (12 * pi))), (pi / 4) * (3 / 2) * (np.sqrt(5 / (12 * pi))),
-             (pi / 4) * (1 / 2) * (np.sqrt(5 / (4 * pi)))])
+            [
+            1 / np.sqrt(4 * pi),
+            ((2 * pi) / 3) * (np.sqrt(3 / (4 * pi))),
+            ((2 * pi) / 3) * (np.sqrt(3 / (4 * pi))),
+            ((2 * pi) / 3) * (np.sqrt(3 / (4 * pi))),
+            (pi / 4) * 3 * (np.sqrt(5 / (12 * pi))),
+            (pi / 4) * 3 * (np.sqrt(5 / (12 * pi))),
+            (pi / 4) * 3 * (np.sqrt(5 / (12 * pi))),
+            (pi / 4) * (3 / 2) * (np.sqrt(5 / (12 * pi))),
+            (pi / 4) * (1 / 2) * (np.sqrt(5 / (4 * pi))),
+        ],
+        dtype=torch.float32,
+        )
+        constant_factor = constant_factor.float()
         self.register_buffer('constant_factor', constant_factor)
 
 
